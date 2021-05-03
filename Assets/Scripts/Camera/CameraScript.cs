@@ -77,13 +77,13 @@ public class CameraScript : MonoBehaviour
         //rotatePlayer.transform.position = cameraOffsetPlayer.normalized * offsetMode1 + player.position;
         Vector3 newPos = cameraOffsetPlayer.normalized * offsetMode1 + player.position;
         newPos = new Vector3(newPos.x, rotatePlayer.transform.position.y, newPos.z);
-        rotatePlayer.transform.position = Vector3.Slerp(rotatePlayer.transform.position, newPos, 0.5f);
+        rotatePlayer.transform.position = Vector3.Slerp(rotatePlayer.transform.position, newPos, 0.05f);
     }
 
     void FollowPoint()
     {
         if(!translating)
-            transform.position = Vector3.MoveTowards(transform.position, objToFollow.position, speed * Time.deltaTime);
+            transform.position = Vector3.Slerp(transform.position, objToFollow.position, 0.05f); //Revisar entre Slerp Lerp y MoveTowards
     }
 
     void MoveCameraUp()
