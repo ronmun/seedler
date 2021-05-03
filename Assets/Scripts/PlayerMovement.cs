@@ -12,6 +12,9 @@ public class PlayerMovement : MonoBehaviour
     public CameraScript cameraScript;
     private Vector3 velocity;
 
+    [HideInInspector]
+    public bool canClimb = false;
+
     //Controls
     PlayerControls controls;
     Vector2 movement;
@@ -34,7 +37,10 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        CameraPositionMovement(movement.y, movement.x);
+        if (!canClimb)
+            CameraPositionMovement(movement.y, movement.x);
+        else
+            Climb();
     }
 
     void CameraPositionMovement(float vertical, float horizontal)
@@ -54,6 +60,14 @@ public class PlayerMovement : MonoBehaviour
             Vector3 direction = new Vector3(velocity.x, 0f, velocity.z);
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(direction, Vector3.up), Time.deltaTime * rotationSpeed);
         }
+    }
+
+    void Climb()
+    {
+        if (movement.y > 0.1)
+            transform.Translate( Vector3.up * Time.deltaTime * playerSpeed);
+        /*if (movement.y < -0.1)
+            transform.Translate(Vector3.down * Time.deltaTime * playerSpeed);*/
     }
 
     /*void WorldPositionMovement()

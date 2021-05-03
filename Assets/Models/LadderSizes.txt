@@ -1,0 +1,2 @@
+Scale all to 0.04
+Rotate only on Y axis
