@@ -27,6 +27,8 @@ public class CameraScript : MonoBehaviour
     private bool zooming = false;
     private bool translating = false;
     private Transform objToFollow;
+    private Transform objToLookAt;
+    private Vector3 cameraOffsetPlayer;
 
     //Controls
     PlayerControls controls;
@@ -55,19 +57,33 @@ public class CameraScript : MonoBehaviour
         offsetMode0 = (rotateGlobal.transform.position - pivot.position).magnitude;
         rotatePlayer.transform.position = (rotateGlobal.transform.position - pivot.transform.position).normalized;
         rotatePlayer.transform.position = player.position + (rotatePlayer.transform.position * offsetMode1);
+        objToFollow = rotateGlobal.transform;
+        objToLookAt = pivotObject.transform;
     }
 
     void Update()
     {
         Rotate();
         RotateVertical();
+        FollowPoint();
         //ControllableZoom();
         //MoveCameraUp();
     }
 
+    void LateUpdate()
+    {
+        cameraOffsetPlayer = rotatePlayer.transform.position - player.transform.position;
+        //cameraOffsetPlayer = rotatePlayer.transform.position - new Vector3(player.position.x, player.position.y + rotatePlayer.transform.position.y, player.position.z);
+        //rotatePlayer.transform.position = cameraOffsetPlayer.normalized * offsetMode1 + player.position;
+        Vector3 newPos = cameraOffsetPlayer.normalized * offsetMode1 + player.position;
+        newPos = new Vector3(newPos.x, rotatePlayer.transform.position.y, newPos.z);
+        rotatePlayer.transform.position = Vector3.Slerp(rotatePlayer.transform.position, newPos, 0.5f);
+    }
+
     void FollowPoint()
     {
-        
+        if(!translating)
+            transform.position = Vector3.MoveTowards(transform.position, objToFollow.position, speed * Time.deltaTime);
     }
 
     void MoveCameraUp()
@@ -114,7 +130,7 @@ public class CameraScript : MonoBehaviour
 
         if (!translating)
         {
-            transform.LookAt(pivot.transform);
+            transform.LookAt(objToLookAt);
             
             Vector3 perpendicularVector = CalculateRotAxis(rotateGlobal.transform.position, pivotObject.transform.position);
             float velocity = CalculateSpeed(rotateGlobal.transform.position, pivotObject.transform.position);
@@ -176,14 +192,18 @@ public class CameraScript : MonoBehaviour
             switch (cameraMode)
             {
                 case 0:     //Camera global mode
-                    offset *= offsetMode0;
-                    pivot = pivotObject.transform;
-                    Zoom(maxZoomLimit, +zoomSpeed, offset);
+                    //offset *= offsetMode0;
+                    //pivot = pivotObject.transform;
+                    objToFollow = rotateGlobal.transform;
+                    objToLookAt = pivotObject.transform;
+                    Zoom(maxZoomLimit, +zoomSpeed);
                     break;
                 case 1:     //Camera player focus
                     offset *= offsetMode1;
-                    pivot = player;
-                    Zoom((maxZoomLimit / 4) * 3, -zoomSpeed, offset);
+                    //pivot = player;
+                    objToFollow = rotatePlayer.transform;
+                    objToLookAt = player.transform;
+                    Zoom((maxZoomLimit / 4) * 3, -zoomSpeed);
                     break;
                 case 2:     //Camera player focus+
                     Zoom(minZoomLimit, -zoomSpeed);
