@@ -164,7 +164,7 @@ public class CameraScript : MonoBehaviour
     {
         float angle = Mathf.Asin(position.y / Vector3.Distance(position, pivot));
         angle = angle * Mathf.Rad2Deg;
-        Debug.Log(angle);
+        //Debug.Log(angle);
 
         float upSpeed = 0;
 

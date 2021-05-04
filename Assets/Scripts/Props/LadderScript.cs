@@ -10,6 +10,7 @@ public class LadderScript : MonoBehaviour
         {
             PlayerMovement player = other.GetComponent<PlayerMovement>();
             player.canClimb = true;
+            other.attachedRigidbody.useGravity = false;
         }
     }
 
@@ -19,6 +20,7 @@ public class LadderScript : MonoBehaviour
         {
             PlayerMovement player = other.GetComponent<PlayerMovement>();
             player.canClimb = false;
+            other.attachedRigidbody.useGravity = true;
         }
     }
 }
