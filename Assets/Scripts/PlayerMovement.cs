@@ -108,11 +108,11 @@ public class PlayerMovement : MonoBehaviour
 
         int layerMask = LayerMask.NameToLayer("Default");
         layerMask = 1 << layerMask;
-        //layerMask = ~layerMask;
 
-        if (Physics.Raycast(transform.position, velocity.normalized, layerMask))
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, velocity.normalized, out hit, 1.2f, layerMask))
         {
-            Debug.DrawRay(transform.position, velocity.normalized, Color.red);
+            Debug.DrawRay(transform.position, velocity.normalized * hit.distance, Color.red);
             Debug.Log("Hit");
         }
         else
@@ -120,7 +120,7 @@ public class PlayerMovement : MonoBehaviour
             velocity = velocity * playerSpeed;
             rb.MovePosition(transform.position + (velocity * Time.deltaTime));
             Debug.Log("Did not hit");
-            Debug.DrawRay(transform.position, velocity.normalized, Color.white);
+            Debug.DrawRay(transform.position, velocity.normalized * 1.2f, Color.white);
         }
 
         if (vertical != 0 || horizontal != 0)
