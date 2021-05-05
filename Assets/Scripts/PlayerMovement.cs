@@ -5,14 +5,21 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private CharacterController controller;
+
+    public static PlayerMovement instance;
     private Rigidbody rb;
     public float playerSpeed;
     public float runingSpeed;
+    public float bounceForce = 8f;
     public float rotationSpeed;
 
+    public bool isKnocking;
+    public float knockBackLength = .5f;
+    private float knockbackCounter;
+    public Vector2 knockbackPower;
     public CameraScript cameraScript;
     private Vector3 velocity;
-    private float vSpeed = 0;
+    // private float vSpeed = 0;
 
     [HideInInspector]
     public bool canClimb = false;
@@ -20,6 +27,12 @@ public class PlayerMovement : MonoBehaviour
     public List<Transform> stairPoints;
     [HideInInspector]
     public int stairIndex;
+
+    public bool stopMove;
+
+    public GameObject playerModel;
+
+    public float gravityScale = 5f;
 
     //Controls
     PlayerControls controls;
@@ -34,6 +47,8 @@ public class PlayerMovement : MonoBehaviour
 
         controls.PlayerInput.Run.started += ctx => playerSpeed += runingSpeed;
         controls.PlayerInput.Run.canceled += ctx => playerSpeed -= runingSpeed;
+
+        instance = this;
     }
 
     private void Start()
@@ -44,10 +59,56 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        if(!isKnocking && !stopMove) {
+            float yStore = movement.y;
+            movement = (transform.forward * Input.GetAxisRaw("Vertical") + (transform.right * Input.GetAxisRaw("Horizontal")));
+            movement.Normalize();
+            movement = movement * playerSpeed;
+            movement.y = yStore;
+
+        }
         if (!canClimb)
             CameraPositionMovement(movement.y, movement.x);
         else
             Climb();
+
+        if(isKnocking)
+        {
+            knockbackCounter -= Time.deltaTime;
+
+            float yStore = movement.y;
+            movement = playerModel.transform.forward * -knockbackPower.x;
+            movement.y = yStore;
+
+            if (controller.isGrounded)
+            {
+                movement.y = 0f;
+            }
+
+            movement.y += Physics.gravity.y * Time.deltaTime * gravityScale;
+
+            controller.Move(movement * Time.deltaTime);
+
+            if (knockbackCounter <= 0)
+            {
+                isKnocking = false;
+            }
+        }
+
+        if(stopMove)
+        {
+            movement = Vector3.zero;
+            movement.y += Physics.gravity.y * Time.deltaTime * gravityScale;
+            controller.Move(movement);
+        }
+
+        // anim.SetFloat("Speed", Mathf.Abs(movement.x) + Mathf.Abs(movement.z));
+        // anim.SetBool("Grounded", controller.isGrounded);
+    }
+
+    public void Bounce(){
+        movement.y = bounceForce;
+        controller.Move(movement * Time.deltaTime);
     }
 
     /*void CameraPositionMovement(float vertical, float horizontal)
@@ -176,5 +237,14 @@ public class PlayerMovement : MonoBehaviour
     private void OnDisable()
     {
         controls.PlayerInput.Disable();
+    }
+
+     public void Knockback()
+    {
+        isKnocking = true;
+        knockbackCounter = knockBackLength;
+        //Debug.Log("Knocked Back");
+        movement.y = knockbackPower.y;
+        controller.Move(movement * Time.deltaTime);
     }
 }
