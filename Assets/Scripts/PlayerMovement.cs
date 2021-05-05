@@ -5,15 +5,21 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private CharacterController controller;
+    private Rigidbody rb;
     public float playerSpeed;
     public float runingSpeed;
     public float rotationSpeed;
 
     public CameraScript cameraScript;
     private Vector3 velocity;
+    private float vSpeed = 0;
 
     [HideInInspector]
     public bool canClimb = false;
+    [HideInInspector]
+    public List<Transform> stairPoints;
+    [HideInInspector]
+    public int stairIndex;
 
     //Controls
     PlayerControls controls;
@@ -32,7 +38,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        controller = gameObject.GetComponent<CharacterController>();
+        //controller = gameObject.GetComponent<CharacterController>();
+        rb = this.GetComponent<Rigidbody>();
     }
 
     void FixedUpdate()
@@ -43,7 +50,7 @@ public class PlayerMovement : MonoBehaviour
             Climb();
     }
 
-    void CameraPositionMovement(float vertical, float horizontal)
+    /*void CameraPositionMovement(float vertical, float horizontal)
     {
         Vector3 translation = vertical * cameraScript.transform.forward;
         translation += horizontal * cameraScript.transform.right;
@@ -60,26 +67,106 @@ public class PlayerMovement : MonoBehaviour
             Vector3 direction = new Vector3(velocity.x, 0f, velocity.z);
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(direction, Vector3.up), Time.deltaTime * rotationSpeed);
         }
+    }*/
+
+    /*void CameraPositionMovement(float vertical, float horizontal)   //Movimiento sin RigidBody, con Move y gravedad ajustable.
+    {
+        Vector3 translation = vertical * cameraScript.transform.forward;
+        translation += horizontal * cameraScript.transform.right;
+
+        if (translation.magnitude > 0)
+            velocity = translation;
+        else
+            velocity = Vector3.zero;
+
+        velocity = velocity * playerSpeed;
+
+        if(!controller.isGrounded)
+        {
+            vSpeed -= 29.81f * Time.deltaTime;
+            velocity.y = vSpeed;
+        }
+        else
+        {
+            vSpeed = 0;
+        }
+
+        controller.Move(velocity * Time.deltaTime);
+        //transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(transform.position * velocity.magnitude), Time.deltaTime * rotationSpeed);
+        if (vertical != 0 || horizontal != 0)
+        {
+            Vector3 direction = new Vector3(velocity.x, 0f, velocity.z);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(direction, Vector3.up), Time.deltaTime * rotationSpeed);
+        }
+    }*/
+
+    void CameraPositionMovement(float vertical, float horizontal)   //Movimiento con RigidBody
+    {
+        Vector3 translation = vertical * new Vector3(cameraScript.transform.forward.x, 0f, cameraScript.transform.forward.z);
+        translation += horizontal * cameraScript.transform.right;
+
+        if (translation.magnitude > 0)
+            velocity = translation;
+        else
+            velocity = Vector3.zero;
+
+        int layerMask = LayerMask.NameToLayer("Default");
+        layerMask = 1 << layerMask;
+
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, velocity.normalized, out hit, 1.2f, layerMask))
+        {
+            Debug.DrawRay(transform.position, velocity.normalized * hit.distance, Color.red);
+            Debug.Log("Hit");
+        }
+        else
+        {
+            velocity = velocity * playerSpeed;
+            rb.MovePosition(transform.position + (velocity * Time.deltaTime));
+            Debug.Log("Did not hit");
+            Debug.DrawRay(transform.position, velocity.normalized * 1.2f, Color.white);
+        }
+
+        if (vertical != 0 || horizontal != 0)
+        {
+            Vector3 direction = new Vector3(velocity.x, 0f, velocity.z);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(direction, Vector3.up), Time.deltaTime * rotationSpeed);
+        }
     }
 
     void Climb()
     {
-        if (movement.y > 0.1)
-            transform.Translate( Vector3.up * Time.deltaTime * playerSpeed);
-        /*if (movement.y < -0.1)
-            transform.Translate(Vector3.down * Time.deltaTime * playerSpeed);*/
-    }
-
-    /*void WorldPositionMovement()
-    {
-        Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        controller.SimpleMove(move * playerSpeed);
-
-        if (move != Vector3.zero)
+        if (stairPoints.Count > 0)
         {
-            gameObject.transform.forward = move;
+            if (movement.y > 0.1)
+            {
+                rb.MovePosition(transform.position + (stairPoints[stairIndex].position - transform.position).normalized * Time.deltaTime * playerSpeed);
+                if (Vector3.Distance(this.transform.position, stairPoints[stairIndex].position) < 0.1f)
+                {
+                    if (stairIndex + 1 == stairPoints.Count)
+                        canClimb = false;
+                    else
+                        stairIndex++;
+                }
+            }
+            if (movement.y < -0.1)
+            {
+                if(stairIndex == 0)
+                    canClimb = false;
+                else
+                {
+                    rb.MovePosition(transform.position + (stairPoints[stairIndex - 1].position - transform.position).normalized * Time.deltaTime * playerSpeed);
+                    if (Vector3.Distance(this.transform.position, stairPoints[stairIndex - 1].position) < 0.1f)
+                            stairIndex--;
+                }
+            }
         }
-    }*/
+        else
+            Debug.Log("Error, list empty");
+
+        if (!canClimb)
+            rb.useGravity = true;
+    }
 
     private void OnEnable()
     {
