@@ -4,23 +4,25 @@ using UnityEngine;
 
 public class LadderScript : MonoBehaviour
 {
-    private void OnTriggerStay(Collider other)
+    public List<Transform> List;
+    private PlayerMovement player;
+
+    void Start()
     {
-        if(other.gameObject.tag == "Player")
-        {
-            PlayerMovement player = other.GetComponent<PlayerMovement>();
-            player.canClimb = true;
-            other.attachedRigidbody.useGravity = false;
-        }
+        player = FindObjectOfType<PlayerMovement>();
     }
 
-    private void OnTriggerExit(Collider other)
+    public void SendList(string direction)
     {
-        if (other.gameObject.tag == "Player")
-        {
-            PlayerMovement player = other.GetComponent<PlayerMovement>();
-            player.canClimb = false;
-            other.attachedRigidbody.useGravity = true;
-        }
+        player.GetComponent<Rigidbody>().useGravity = false;
+
+        player.stairPoints = List;
+
+        if (direction == "up")
+            player.stairIndex = 0;
+        else
+            player.stairIndex = List.Count-1;
+
+        player.canClimb = true;
     }
 }

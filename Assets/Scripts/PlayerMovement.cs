@@ -16,6 +16,10 @@ public class PlayerMovement : MonoBehaviour
 
     [HideInInspector]
     public bool canClimb = false;
+    [HideInInspector]
+    public List<Transform> stairPoints;
+    [HideInInspector]
+    public int stairIndex;
 
     //Controls
     PlayerControls controls;
@@ -132,14 +136,36 @@ public class PlayerMovement : MonoBehaviour
 
     void Climb()
     {
-        //rb.useGravity = false;
+        if (stairPoints.Count > 0)
+        {
+            if (movement.y > 0.1)
+            {
+                rb.MovePosition(transform.position + (stairPoints[stairIndex].position - transform.position).normalized * Time.deltaTime * playerSpeed);
+                if (Vector3.Distance(this.transform.position, stairPoints[stairIndex].position) < 0.1f)
+                {
+                    if (stairIndex + 1 == stairPoints.Count)
+                        canClimb = false;
+                    else
+                        stairIndex++;
+                }
+            }
+            if (movement.y < -0.1)
+            {
+                if(stairIndex == 0)
+                    canClimb = false;
+                else
+                {
+                    rb.MovePosition(transform.position + (stairPoints[stairIndex - 1].position - transform.position).normalized * Time.deltaTime * playerSpeed);
+                    if (Vector3.Distance(this.transform.position, stairPoints[stairIndex - 1].position) < 0.1f)
+                            stairIndex--;
+                }
+            }
+        }
+        else
+            Debug.Log("Error, list empty");
 
-        if (movement.y > 0.1)
-            rb.MovePosition(transform.position + Vector3.up * Time.deltaTime * playerSpeed);
-            //transform.Translate( Vector3.up * Time.deltaTime * playerSpeed);
-        if (movement.y < -0.1)
-            rb.MovePosition(transform.position + Vector3.down * Time.deltaTime * playerSpeed);
-            //transform.Translate(Vector3.down * Time.deltaTime * playerSpeed);
+        if (!canClimb)
+            rb.useGravity = true;
     }
 
     private void OnEnable()
