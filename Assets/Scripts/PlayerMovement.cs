@@ -21,6 +21,8 @@ public class PlayerMovement : MonoBehaviour
     public List<Transform> stairPoints;
     [HideInInspector]
     public int stairIndex;
+    [HideInInspector]
+    public Vector3 stairRotation;
 
     public bool stopMove;
 
@@ -104,6 +106,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Climb()
     {
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(stairRotation, Vector3.up), Time.deltaTime * rotationSpeed * 2);
         if (stairPoints.Count > 0)
         {
             if (movement.y > 0.1)

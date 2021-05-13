@@ -23,6 +23,8 @@ public class LadderScript : MonoBehaviour
         else
             player.stairIndex = List.Count-1;
 
+        player.stairRotation = gameObject.transform.forward;
+
         player.canClimb = true;
     }
 }
