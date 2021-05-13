@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     public float runingSpeed;
     public float bounceForce = 8f;
     public float rotationSpeed;
+    public int gems = 0;
 
     public CameraScript cameraScript;
     private Vector3 velocity;
