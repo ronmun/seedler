@@ -2859,7 +2859,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2077818830}
   - component: {fileID: 2077818827}
-  - component: {fileID: 2077818832}
   - component: {fileID: 2077818828}
   - component: {fileID: 2077818831}
   m_Layer: 2
@@ -2938,24 +2937,6 @@ MonoBehaviour:
   stopMove: 0
   playerModel: {fileID: 0}
   gravityScale: 5
---- !u!143 &2077818832
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2077818826}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Height: 1
-  m_Radius: 1
-  m_SlopeLimit: 45
-  m_StepOffset: 0.1
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: -0.5, z: 0}
 --- !u!1 &2104700076 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 872fe46648f304e429c9e8b87e5e8dcf,

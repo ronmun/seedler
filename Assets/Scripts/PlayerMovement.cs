@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private CharacterController controller;
-
     public static PlayerMovement instance;
     private Rigidbody rb;
     public float playerSpeed;
@@ -16,7 +14,6 @@ public class PlayerMovement : MonoBehaviour
 
     public CameraScript cameraScript;
     private Vector3 velocity;
-    // private float vSpeed = 0;
 
     [HideInInspector]
     public bool canClimb = false;
@@ -24,6 +21,8 @@ public class PlayerMovement : MonoBehaviour
     public List<Transform> stairPoints;
     [HideInInspector]
     public int stairIndex;
+    [HideInInspector]
+    public Vector3 stairRotation;
 
     public bool stopMove;
 
@@ -71,56 +70,6 @@ public class PlayerMovement : MonoBehaviour
         // controller.Move(movement * Time.deltaTime);
     }
 
-    /*void CameraPositionMovement(float vertical, float horizontal)
-    {
-        Vector3 translation = vertical * cameraScript.transform.forward;
-        translation += horizontal * cameraScript.transform.right;
-
-        if (translation.magnitude > 0)
-            velocity = translation;
-        else
-            velocity = Vector3.zero;
-
-        controller.SimpleMove(velocity*playerSpeed);
-        //transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(transform.position * velocity.magnitude), Time.deltaTime * rotationSpeed);
-        if(vertical != 0 || horizontal != 0)
-        {
-            Vector3 direction = new Vector3(velocity.x, 0f, velocity.z);
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(direction, Vector3.up), Time.deltaTime * rotationSpeed);
-        }
-    }*/
-
-    /*void CameraPositionMovement(float vertical, float horizontal)   //Movimiento sin RigidBody, con Move y gravedad ajustable.
-    {
-        Vector3 translation = vertical * cameraScript.transform.forward;
-        translation += horizontal * cameraScript.transform.right;
-
-        if (translation.magnitude > 0)
-            velocity = translation;
-        else
-            velocity = Vector3.zero;
-
-        velocity = velocity * playerSpeed;
-
-        if(!controller.isGrounded)
-        {
-            vSpeed -= 29.81f * Time.deltaTime;
-            velocity.y = vSpeed;
-        }
-        else
-        {
-            vSpeed = 0;
-        }
-
-        controller.Move(velocity * Time.deltaTime);
-        //transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(transform.position * velocity.magnitude), Time.deltaTime * rotationSpeed);
-        if (vertical != 0 || horizontal != 0)
-        {
-            Vector3 direction = new Vector3(velocity.x, 0f, velocity.z);
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(direction, Vector3.up), Time.deltaTime * rotationSpeed);
-        }
-    }*/
-
     void CameraPositionMovement(float vertical, float horizontal)   //Movimiento con RigidBody
     {
         Vector3 translation = vertical * new Vector3(cameraScript.transform.forward.x, 0f, cameraScript.transform.forward.z);
@@ -157,6 +106,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Climb()
     {
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(stairRotation, Vector3.up), Time.deltaTime * rotationSpeed * 2);
         if (stairPoints.Count > 0)
         {
             if (movement.y > 0.1)
