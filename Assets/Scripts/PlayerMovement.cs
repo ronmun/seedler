@@ -6,13 +6,16 @@ public class PlayerMovement : MonoBehaviour
 {
     public static PlayerMovement instance;
     private Rigidbody rb;
-    public float playerSpeed;
+    public float playerBaseSpeed;
     public float runingSpeed;
     public float bounceForce = 8f;
     public float rotationSpeed;
     public int gems = 0;
 
     public CameraScript cameraScript;
+    [SerializeField]
+    private float playerSpeed;
+    private bool isRunning = false;
     private Vector3 velocity;
 
     [HideInInspector]
@@ -42,7 +45,10 @@ public class PlayerMovement : MonoBehaviour
         controls.PlayerInput.Move.canceled += ctx => movement = Vector2.zero;
 
         controls.PlayerInput.Run.started += ctx => playerSpeed += runingSpeed;
+        controls.PlayerInput.Run.started += ctx => isRunning = true;
+
         controls.PlayerInput.Run.canceled += ctx => playerSpeed -= runingSpeed;
+        controls.PlayerInput.Run.canceled += ctx => isRunning = false;
 
         instance = this;
     }
@@ -51,6 +57,7 @@ public class PlayerMovement : MonoBehaviour
     {
         //controller = gameObject.GetComponent<CharacterController>();
         rb = this.GetComponent<Rigidbody>();
+        playerSpeed = playerBaseSpeed;
     }
 
     void FixedUpdate()
@@ -137,6 +144,21 @@ public class PlayerMovement : MonoBehaviour
 
         if (!canClimb)
             rb.useGravity = true;
+    }
+
+    public IEnumerator SpeedBoost(float speed)
+    {
+        playerSpeed += speed;
+        while(playerSpeed > playerBaseSpeed)
+        {
+            playerSpeed -= 3f * Time.deltaTime;
+            yield return null;
+        }
+
+        if (isRunning)
+            playerSpeed = playerBaseSpeed + playerSpeed;
+        else
+            playerSpeed = playerBaseSpeed;
     }
 
     private void OnEnable()
