@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -364,6 +364,7 @@ GameObject:
   - component: {fileID: 1147246619}
   - component: {fileID: 1147246618}
   - component: {fileID: 1147246621}
+  - component: {fileID: 1147246622}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -388,8 +389,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -85.6, y: 35.7}
-  m_SizeDelta: {x: 158.11194, y: 53.04754}
+  m_AnchoredPosition: {x: -63.82, y: 32.28}
+  m_SizeDelta: {x: 114.53369, y: 46.220222}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1147246618
 MonoBehaviour:
@@ -411,11 +412,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 0}
-    m_HighlightedColor: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 0.14117648}
-    m_PressedColor: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 0.2901961}
-    m_SelectedColor: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 0.5019608}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_NormalColor: {r: 0, g: 0, b: 0, a: 0}
+    m_HighlightedColor: {r: 0, g: 0, b: 0, a: 0.14117648}
+    m_PressedColor: {r: 0, g: 0, b: 0, a: 0.4392157}
+    m_SelectedColor: {r: 0, g: 0, b: 0, a: 0.5019608}
+    m_DisabledColor: {r: 0, g: 0, b: 0, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -433,7 +434,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1147246619}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1147246622}
+        m_MethodName: MainMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1147246619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -490,6 +502,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1147246622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1147246616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee907e28980e73e469aa645527bfb772, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firstLevelIndex: 0
+  creditsIndex: 0
+  mainMenuIndex: 0
 --- !u!1 &1302716321
 GameObject:
   m_ObjectHideFlags: 0
@@ -693,7 +720,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
+  m_FirstSelected: {fileID: 1147246616}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &1379318952
