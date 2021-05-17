@@ -9,6 +9,8 @@ public class MenuButtons : MonoBehaviour
 {
     public int firstLevelIndex;
     public int creditsIndex;
+    public int mainMenuIndex;
+
     public void Play(){ 
         SceneManager.LoadScene(firstLevelIndex);
     }
@@ -17,5 +19,9 @@ public class MenuButtons : MonoBehaviour
     }
     public void Exit(){ 
         Application.Quit();
+    }
+
+    public void MainMenu(){
+        SceneManager.LoadScene(mainMenuIndex);
     }
 }
