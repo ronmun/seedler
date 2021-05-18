@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DiamondScript : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class DiamondScript : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             // Cambiar de escena
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 }
