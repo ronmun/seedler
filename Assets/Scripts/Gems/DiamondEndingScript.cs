@@ -15,6 +15,7 @@ public class DiamondEndingScript : MonoBehaviour
     public GameObject enemies;
     public MeshRenderer mesh;
     public BoxCollider collider;
+    public Material skybox;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -30,6 +31,7 @@ public class DiamondEndingScript : MonoBehaviour
             enemies.SetActive(false);
             mesh.enabled = false;
             collider.enabled = false;
+            RenderSettings.skybox = skybox;
         }
     }
 
