@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
     public float gravityScale = 5f;
 
     //Controls
-    PlayerControls controls;
+    public PlayerControls controls;
     Vector2 movement;
 
     private void Awake()

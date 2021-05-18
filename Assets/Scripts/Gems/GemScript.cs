@@ -15,9 +15,10 @@ public class GemScript : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
+            GameManager.instance.AddGems(1);
             other.gameObject.GetComponent<PlayerMovement>().gems += 1;
             collectible.PlaySound();
-            gameObject.active = false;
+            gameObject.SetActive(false);
         }
     }
 }
