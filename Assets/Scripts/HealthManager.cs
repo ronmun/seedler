@@ -13,7 +13,7 @@ public class HealthManager : MonoBehaviour
 
     public Sprite[] healthBarImages;
 
-    public int hurtSound;
+    // public int hurtSound;
 
     private void Awake()
     {
@@ -55,6 +55,9 @@ public class HealthManager : MonoBehaviour
 
     public void Hurt()
     {
+        Debug.Log("Hurt!");
+
+
         if (invincCounter <= 0)
         {
             currentHealth--;
@@ -79,7 +82,7 @@ public class HealthManager : MonoBehaviour
     {
         currentHealth = maxHealth;
 
-        // UIManager.instance.healthImage.enabled = true;
+        UIManager.instance.healthImage.enabled = true;
 
         UpdateUI();
     }
@@ -97,34 +100,34 @@ public class HealthManager : MonoBehaviour
 
     public void UpdateUI()
     {
-        // UIManager.instance.healthText.text = currentHealth.ToString();
+        UIManager.instance.healthText.text = currentHealth.ToString();
 
-        // switch(currentHealth)
-        // {
-        //     case 5:
-        //         UIManager.instance.healthImage.sprite = healthBarImages[4];
-        //         break;
+        switch(currentHealth)
+        {
+            case 5:
+                UIManager.instance.healthImage.sprite = healthBarImages[4];
+                break;
 
-        //     case 4:
-        //         UIManager.instance.healthImage.sprite = healthBarImages[3];
-        //         break;
+            case 4:
+                UIManager.instance.healthImage.sprite = healthBarImages[3];
+                break;
 
-        //     case 3:
-        //         UIManager.instance.healthImage.sprite = healthBarImages[2];
-        //         break;
+            case 3:
+                UIManager.instance.healthImage.sprite = healthBarImages[2];
+                break;
 
-        //     case 2:
-        //         UIManager.instance.healthImage.sprite = healthBarImages[1];
-        //         break;
+            case 2:
+                UIManager.instance.healthImage.sprite = healthBarImages[1];
+                break;
 
-        //     case 1:
-        //         UIManager.instance.healthImage.sprite = healthBarImages[0];
-        //         break;
+            case 1:
+                UIManager.instance.healthImage.sprite = healthBarImages[0];
+                break;
 
-        //     case 0:
-        //         UIManager.instance.healthImage.enabled = false;
-        //         break;
-        // }
+            case 0:
+                UIManager.instance.healthImage.enabled = false;
+                break;
+        }
     }
 
     public void PlayerKilled()

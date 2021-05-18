@@ -7,8 +7,10 @@ public class ButtonScript : MonoBehaviour
     public GameObject platform;
     private bool isPlatformActive = false;
     public GameObject leaf;
+    public AudioSource audio;
     private Renderer leafRenderer;
     private Color originalLeafColor;
+
     void Start()
     {
         leafRenderer = leaf.GetComponent<Renderer>();
@@ -26,6 +28,7 @@ public class ButtonScript : MonoBehaviour
             } else {
                 leafRenderer.material.color = originalLeafColor;
             }
+            audio.Play();
             
         }
      }
