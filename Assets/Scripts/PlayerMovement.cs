@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private float playerSpeed;
     private bool isRunning = false;
     private Vector3 velocity;
+    private Animator animator;
 
     [HideInInspector]
     public bool canClimb = false;
@@ -40,6 +41,7 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         controls = new PlayerControls();
+        animator = GetComponentInChildren<Animator>();
 
         controls.PlayerInput.Move.performed += ctx => movement = ctx.ReadValue<Vector2>();
         controls.PlayerInput.Move.canceled += ctx => movement = Vector2.zero;
@@ -49,6 +51,8 @@ public class PlayerMovement : MonoBehaviour
 
         controls.PlayerInput.Run.canceled += ctx => playerSpeed -= runingSpeed;
         controls.PlayerInput.Run.canceled += ctx => isRunning = false;
+
+        controls.PlayerInput.Pause.started += ctx => GameManager.instance.PauseUnpause();
 
         instance = this;
     }
@@ -108,7 +112,10 @@ public class PlayerMovement : MonoBehaviour
         {
             Vector3 direction = new Vector3(velocity.x, 0f, velocity.z);
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(direction, Vector3.up), Time.deltaTime * rotationSpeed);
+            animator.SetBool("isWalking", true);
         }
+        else
+            animator.SetBool("isWalking", false);
     }
 
     void Climb()

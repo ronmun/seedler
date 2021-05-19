@@ -17,11 +17,19 @@ public class DiamondEndingScript : MonoBehaviour
     public BoxCollider collider;
     public Material skybox;
 
+    private MusicController musicController;
+
+    private void Awake()
+    {
+        musicController = FindObjectOfType<MusicController>();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
             StartCoroutine(StartBonusScene());
+            musicController.ChangeSong("credits");
             corruptlevel.SetActive(false);
             level.SetActive(true);
             corruptParticles.SetActive(false);

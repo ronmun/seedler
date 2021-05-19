@@ -4,23 +4,14 @@ using UnityEngine;
 
 public class HurtPlayer : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public AudioSource audio;
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Player")
         {
             HealthManager.instance.Hurt();
+            audio.Play();
         }
     }
 }
