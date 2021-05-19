@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -183,13 +183,16 @@ MonoBehaviour:
     Fernando Cardoso Martinez\r\nCarlos Guerrero Avila\r\nErick Salas Romero\r\nAaron
     G\xF3mez De Segura Gonz\xE1lez\r\n\r\nLead Designer\r\nCarre\xF3n Alonso Sebasti\xE1n
     Alfonso\r\n\r\nDesigners\r\nCarre\xF3n Alonso Sebasti\xE1n Alfonso\r\nLuis Fernando
-    Cardoso Martinez\r\nCarlos Guerrero Avila\r\nAaron G\xF3mez De Segura Gonz\xE1lez\r\n\r\nLevel
-    Designers\r\nLuis Fernando Cardoso Martinez\r\nCarlos Guerrero Avila\r\nAaron
-    G\xF3mez De Segura Gonz\xE1lez\r\n\nQuality assurance leader\r\nErick Salas Romero\r\n\r\nSkybox
-    Assets\nFantsay Skybox FREE\n\nMap assets\r\n\n\nMusic\r\n?????????\n\r\nFont\r\n?????????\n\r\nSounds\r\n?????????\n\r\nTHANKS
+    Cardoso Martinez\r\nCarlos Guerrero Avila\r\nAaron G\xF3mez De Segura Gonz\xE1lez\r\n\r\nModelers\nCarre\xF3n
+    Alonso Sebasti\xE1n Alfonso\r\nCarlos Guerrero Avila\r\nAaron G\xF3mez De Segura
+    Gonz\xE1lez\n\nLevel Designers\r\nLuis Fernando Cardoso Martinez\r\nAaron G\xF3mez
+    De Segura Gonz\xE1lez\r\n\nQuality assurance leader\r\nErick Salas Romero\r\n\r\nSkybox
+    Assets\nFantsay Skybox FREE\n\nAssets\r\nGems - godgoldfear\nTrees & rocks -
+    Jaks\n\nMusic\r\nMasato Kouda\r\nJake Kaufman\r\nTimothy J. Borquez\nJimmy Levine\nBobby
+    Crew\nAlex Wilkinson\n\r\nFont\r\nKarma Future\n\r\nSounds\r\nbfxr\n\r\nTHANKS
     FOR PLAYING\r\n\r\nCARRE\xD3N ALONSO SEBASTI\xC1N ALFONSO\r\nLUIS FERNANDO CARDOSO
     MARTINEZ\r\nAARON G\xD3MEZ DE SEGURA GONZ\xC1LEZ\r\nCARLOS GUERRERO AVILA\r\nERICK
-    SALAS ROMERO\r\n\r\n"
+    SALAS ROMERO\r\n\r\nRONMUN\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: aae5564561d44ac47853ed59248c5f89, type: 2}
   m_sharedMaterial: {fileID: 2304674229683998069, guid: aae5564561d44ac47853ed59248c5f89,
